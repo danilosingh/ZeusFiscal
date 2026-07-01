@@ -63,19 +63,7 @@ namespace NFe.Classes.Informacoes.Destinatario
         /// <summary>
         ///     E03a - Identificador do destinatário, em caso de comprador estrangeiro
         /// </summary>
-        public string idEstrangeiro
-        {
-            get { return _idEstrangeiro; }
-            set
-            {
-                if (string.IsNullOrEmpty(value))
-                    return;
-                if (!string.IsNullOrEmpty(CNPJ) || !string.IsNullOrEmpty(CPF))
-                    throw new ArgumentException(ErroCpfCnpjIdEstrangeiroPreenchidos);
-
-                _idEstrangeiro = value;
-            }
-        }
+        public string idEstrangeiro { get; set; }
 
         /// <summary>
         ///     E04 - Razão Social ou nome do destinatário
