@@ -88,7 +88,7 @@ namespace DFe.Wsdl.Common
 
             StreamWriter streamWriter = new StreamWriter(httpWr.GetRequestStream());
 
-            streamWriter.Write(xmlSoap, 0, Encoding.UTF8.GetBytes(xmlSoap).Length);
+            streamWriter.Write(xmlSoap);
             streamWriter.Close();
 
             using (HttpWebResponse httpResponse = (HttpWebResponse)httpWr.GetResponse())
@@ -129,7 +129,7 @@ namespace DFe.Wsdl.Common
 
             StreamWriter streamWriter = new StreamWriter(httpWr.GetRequestStream());
 
-            streamWriter.Write(xmlSoap, 0, Encoding.UTF8.GetBytes(xmlSoap).Length);
+            streamWriter.Write(xmlSoap);
             streamWriter.Close();
 
             using (HttpWebResponse httpResponse = (HttpWebResponse)httpWr.GetResponse())
