@@ -31,6 +31,8 @@ namespace NFe.Utils
         private VersaoServico _versaoRecepcaoEventoInsucessoEntrega;
         private VersaoServico _versaoRecepcaoEventoComprovanteEntrega;
         private VersaoServico _versaoRecepcaoEventoConciliacaoFinanceira;
+        private VersaoServico _versaoRecepcaoEventoPerecimentoTransporte;
+        private VersaoServico _versaoRecepcaoEventoRTC;
         private VersaoServico _versaoRecepcaoEventoEpec;
         private VersaoServico _versaoRecepcaoEventoManifestacaoDestinatario;
         private VersaoServico _versaoNfeRecepcao;
@@ -205,9 +207,10 @@ namespace NFe.Utils
             if (enderecosMaisecentes.Any())
             {
                 VersaoRecepcaoEventoCceCancelamento = obterVersao(ServicoNFe.RecepcaoEventoCancelmento);
-                VersaoRecepcaoEventoInsucessoEntrega = obterVersao(ServicoNFe.RecepcaoEventoInsucessoEntregaNFe);
                 VersaoRecepcaoEventoComprovanteEntrega = obterVersao(ServicoNFe.RecepcaoEventoComprovanteEntregaNFe);
                 VersaoRecepcaoEventoConciliacaoFinanceira = obterVersao(ServicoNFe.RecepcaoEventoConciliacaoFinanceiraNFe);
+                VersaoRecepcaoEventoPerecimentoTransporte = obterVersao(ServicoNFe.RecepcaoEventoPerecimentoTransporteNFe);
+                VersaoRecepcaoEventoRTC = obterVersao(ServicoNFe.RecepcaoEventoCancelamentoEventoNFe);
                 VersaoRecepcaoEventoEpec = obterVersao(ServicoNFe.RecepcaoEventoEpec);
                 VersaoRecepcaoEventoManifestacaoDestinatario = obterVersao(ServicoNFe.RecepcaoEventoManifestacaoDestinatario);
                 VersaoNfeRecepcao = obterVersao(ServicoNFe.NfeRecepcao);
@@ -295,6 +298,35 @@ namespace NFe.Utils
             {
                 if (value == _versaoRecepcaoEventoConciliacaoFinanceira) return;
                 _versaoRecepcaoEventoConciliacaoFinanceira = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        ///     Versão do serviço RecepcaoEvento para Perecimento, Perda, Roubo ou Furto durante o Transporte
+        /// </summary>
+        public VersaoServico VersaoRecepcaoEventoPerecimentoTransporte
+        {
+            get { return _versaoRecepcaoEventoPerecimentoTransporte; }
+            set
+            {
+                if (value == _versaoRecepcaoEventoPerecimentoTransporte) return;
+                _versaoRecepcaoEventoPerecimentoTransporte = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        ///     Versão do serviço RecepcaoEvento para os eventos da Reforma Tributária (NT 2025.002), códigos
+        ///     110001, 112110, 112120, 112140, 211110, 211124, 211128, 211130, 211140, 211150, 212110, 212120, 412120 e 412130
+        /// </summary>
+        public VersaoServico VersaoRecepcaoEventoRTC
+        {
+            get { return _versaoRecepcaoEventoRTC; }
+            set
+            {
+                if (value == _versaoRecepcaoEventoRTC) return;
+                _versaoRecepcaoEventoRTC = value;
                 OnPropertyChanged();
             }
         }

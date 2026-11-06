@@ -121,6 +121,27 @@ namespace NFe.Utils.Enderecos
 
             var eventoCceCanc = new[] { ServicoNFe.RecepcaoEventoCartaCorrecao, ServicoNFe.RecepcaoEventoCancelmento };
 
+            var eventoPerecimentoTransporteNFe = new[] { ServicoNFe.RecepcaoEventoPerecimentoTransporteNFe };
+
+            // Eventos da Reforma Tributária (NT 2025.002), autorizados na SVRS
+            var eventosRTC = new[]
+            {
+                ServicoNFe.RecepcaoEventoCancelamentoEventoNFe,
+                ServicoNFe.RecepcaoEventoPagamentoIntegralNFe,
+                ServicoNFe.RecepcaoEventoImportacaoAlcZfmNFe,
+                ServicoNFe.RecepcaoEventoFornecimentoNaoRealizadoNFe,
+                ServicoNFe.RecepcaoEventoApropriacaoCredPresumidoNFe,
+                ServicoNFe.RecepcaoEventoPerecimentoTransporteAdquirenteNFe,
+                ServicoNFe.RecepcaoEventoAceiteDebitoNotaCreditoNFe,
+                ServicoNFe.RecepcaoEventoImobilizacaoItemNFe,
+                ServicoNFe.RecepcaoEventoApropriacaoCreditoCombustivelNFe,
+                ServicoNFe.RecepcaoEventoApropriacaoCreditoBensServicosNFe,
+                ServicoNFe.RecepcaoEventoManifestacaoTransfCredIBSNFe,
+                ServicoNFe.RecepcaoEventoManifestacaoTransfCredCBSNFe,
+                ServicoNFe.RecepcaoEventoManifestacaoFiscoTransfCredIBSNFe,
+                ServicoNFe.RecepcaoEventoManifestacaoFiscoTransfCredCBSNFe
+            };
+
             var hom = TipoAmbiente.Homologacao;
 
             var prod = TipoAmbiente.Producao;
@@ -425,6 +446,7 @@ namespace NFe.Utils.Enderecos
                 if (emissao != TipoEmissao.teEPEC)
                     addServico(eventoCceCanc, versao1, hom, emissao, Estado.GO, nfe, "https://homolog.sefaz.go.gov.br/nfe/services/v2/RecepcaoEvento?wsdl");
                 addServico(new[] { ServicoNFe.RecepcaoEventoCancelmento }, versao1, hom, emissao, Estado.GO, nfce, "https://homolog.sefaz.go.gov.br/nfe/services/v2/RecepcaoEvento?wsdl");
+                addServico(new[] { ServicoNFe.RecepcaoEventoConciliacaoFinanceiraNFe, ServicoNFe.RecepcaoEventoCancConciliacaoFinanceiraNFe }, versao1, hom, emissao, Estado.GO, nfce, "https://homolog.sefaz.go.gov.br/nfe/services/NFeRecepcaoEvento4?wsdl");
 
                 foreach (var modelo in todosOsModelos)
                 {
@@ -457,6 +479,7 @@ namespace NFe.Utils.Enderecos
                 if (emissao != TipoEmissao.teEPEC)
                     addServico(eventoCceCanc, versao1, prod, emissao, Estado.GO, nfe, "https://nfe.sefaz.go.gov.br/nfe/services/v2/RecepcaoEvento?wsdl");
                 addServico(new[] { ServicoNFe.RecepcaoEventoCancelmento }, versao1, prod, emissao, Estado.GO, nfce, "https://nfe.sefaz.go.gov.br/nfe/services/v2/RecepcaoEvento?wsdl");
+                addServico(new[] { ServicoNFe.RecepcaoEventoConciliacaoFinanceiraNFe, ServicoNFe.RecepcaoEventoCancConciliacaoFinanceiraNFe }, versao1, prod, emissao, Estado.GO, nfce, "https://nfe.sefaz.go.gov.br/nfe/services/NFeRecepcaoEvento4?wsdl");
 
                 foreach (var modelo in todosOsModelos)
                 {
@@ -1553,7 +1576,9 @@ namespace NFe.Utils.Enderecos
                     if (estado != Estado.CE & !svanEstados.Contains(estado))
                         addServico(new[] { ServicoNFe.NfeDownloadNF }, versao2E3, hom, TipoEmissao.teNormal, estado, modelo, "https://hom.nfe.fazenda.gov.br/NfeDownloadNF/NfeDownloadNF.asmx");
                     if (modelo != ModeloDocumento.NFCe)
+                    {
                         addServico(new[] { ServicoNFe.NFeDistribuicaoDFe }, versao1, hom, TipoEmissao.teNormal, estado, modelo, "https://hom1.nfe.fazenda.gov.br/NFeDistribuicaoDFe/NFeDistribuicaoDFe.asmx");
+                    }
 
                     // Comprovante de Entrega
                     addServico(new[] { ServicoNFe.RecepcaoEventoComprovanteEntregaNFe, ServicoNFe.RecepcaoEventoCancComprovanteEntregaNFe }, versao1, hom, TipoEmissao.teNormal, estado, modelo, "https://hom1.nfe.fazenda.gov.br/NFeRecepcaoEvento4/NFeRecepcaoEvento4.asmx");
@@ -1585,7 +1610,12 @@ namespace NFe.Utils.Enderecos
                     if (estado != Estado.CE & !svanEstados.Contains(estado))
                         addServico(new[] { ServicoNFe.NfeDownloadNF }, versao2E3, prod, TipoEmissao.teNormal, estado, modelo, "https://www.nfe.fazenda.gov.br/NfeDownloadNF/NfeDownloadNF.asmx");
                     if (modelo != ModeloDocumento.NFCe)
+                    {
                         addServico(new[] { ServicoNFe.NFeDistribuicaoDFe }, versao1, prod, TipoEmissao.teNormal, estado, modelo, "https://www1.nfe.fazenda.gov.br/NFeDistribuicaoDFe/NFeDistribuicaoDFe.asmx");
+
+                        // Perecimento, perda, roubo ou furto durante o transporte
+                        addServico(eventoPerecimentoTransporteNFe, versao1, prod, TipoEmissao.teNormal, estado, modelo, "https://www.nfe.fazenda.gov.br/NFeRecepcaoEvento4/NFeRecepcaoEvento4.asmx");
+                    }
 
                     // Comprovante de Entrega
                     addServico(new[] { ServicoNFe.RecepcaoEventoComprovanteEntregaNFe, ServicoNFe.RecepcaoEventoCancComprovanteEntregaNFe }, versao1, prod, TipoEmissao.teNormal, estado, modelo, "https://www.nfe.fazenda.gov.br/NFeRecepcaoEvento4/NFeRecepcaoEvento4.asmx");
@@ -1619,6 +1649,14 @@ namespace NFe.Utils.Enderecos
                             //Conciliação Financeira NFe
                             addServico(new[] { ServicoNFe.RecepcaoEventoConciliacaoFinanceiraNFe, ServicoNFe.RecepcaoEventoCancConciliacaoFinanceiraNFe }, versao1, TipoAmbiente.Producao, emissao, estado, modelo, "https://nfe.svrs.rs.gov.br/ws/recepcaoevento/recepcaoevento4.asmx");
                             addServico(new[] { ServicoNFe.RecepcaoEventoConciliacaoFinanceiraNFe, ServicoNFe.RecepcaoEventoCancConciliacaoFinanceiraNFe }, versao1, TipoAmbiente.Homologacao, emissao, estado, modelo, "https://nfe-homologacao.svrs.rs.gov.br/ws/recepcaoevento/recepcaoevento4.asmx");
+
+                            //Perecimento, perda, roubo ou furto durante o transporte
+                            addServico(eventoPerecimentoTransporteNFe, versao1, TipoAmbiente.Producao, emissao, estado, modelo, "https://nfe.svrs.rs.gov.br/ws/recepcaoevento/recepcaoevento4.asmx");
+                            addServico(eventoPerecimentoTransporteNFe, versao1, TipoAmbiente.Homologacao, emissao, estado, modelo, "https://nfe-homologacao.svrs.rs.gov.br/ws/recepcaoevento/recepcaoevento4.asmx");
+
+                            //Eventos da Reforma Tributária (NT 2025.002)
+                            addServico(eventosRTC, versao1, TipoAmbiente.Producao, emissao, estado, modelo, "https://nfe.svrs.rs.gov.br/ws/recepcaoevento/recepcaoevento4.asmx");
+                            addServico(eventosRTC, versao1, TipoAmbiente.Homologacao, emissao, estado, modelo, "https://nfe-homologacao.svrs.rs.gov.br/ws/recepcaoevento/recepcaoevento4.asmx");
                         }
                     }
                 }
@@ -1660,6 +1698,23 @@ namespace NFe.Utils.Enderecos
                 case ServicoNFe.RecepcaoEventoConciliacaoFinanceiraNFe:
                 case ServicoNFe.RecepcaoEventoCancConciliacaoFinanceiraNFe:
                     return cfgServico.VersaoRecepcaoEventoConciliacaoFinanceira;
+                case ServicoNFe.RecepcaoEventoPerecimentoTransporteNFe:
+                    return cfgServico.VersaoRecepcaoEventoPerecimentoTransporte;
+                case ServicoNFe.RecepcaoEventoCancelamentoEventoNFe:
+                case ServicoNFe.RecepcaoEventoPagamentoIntegralNFe:
+                case ServicoNFe.RecepcaoEventoImportacaoAlcZfmNFe:
+                case ServicoNFe.RecepcaoEventoFornecimentoNaoRealizadoNFe:
+                case ServicoNFe.RecepcaoEventoApropriacaoCredPresumidoNFe:
+                case ServicoNFe.RecepcaoEventoPerecimentoTransporteAdquirenteNFe:
+                case ServicoNFe.RecepcaoEventoAceiteDebitoNotaCreditoNFe:
+                case ServicoNFe.RecepcaoEventoImobilizacaoItemNFe:
+                case ServicoNFe.RecepcaoEventoApropriacaoCreditoCombustivelNFe:
+                case ServicoNFe.RecepcaoEventoApropriacaoCreditoBensServicosNFe:
+                case ServicoNFe.RecepcaoEventoManifestacaoTransfCredIBSNFe:
+                case ServicoNFe.RecepcaoEventoManifestacaoTransfCredCBSNFe:
+                case ServicoNFe.RecepcaoEventoManifestacaoFiscoTransfCredIBSNFe:
+                case ServicoNFe.RecepcaoEventoManifestacaoFiscoTransfCredCBSNFe:
+                    return cfgServico.VersaoRecepcaoEventoRTC;
                 case ServicoNFe.RecepcaoEventoEpec:
                     return cfgServico.VersaoRecepcaoEventoEpec;
                 case ServicoNFe.RecepcaoEventoManifestacaoDestinatario:

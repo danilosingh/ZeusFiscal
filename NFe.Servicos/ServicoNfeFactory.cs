@@ -237,6 +237,25 @@ namespace NFe.Servicos
                 case ServicoNFe.RecepcaoEventoCancComprovanteEntregaNFe:
                     return new RecepcaoEvento4AN(url, certificado, cfg.TimeOut);
 
+                case ServicoNFe.RecepcaoEventoPerecimentoTransporteNFe:
+                    return new RecepcaoEvento4SVCAN(url, certificado, cfg.TimeOut);
+
+                case ServicoNFe.RecepcaoEventoCancelamentoEventoNFe:
+                case ServicoNFe.RecepcaoEventoPagamentoIntegralNFe:
+                case ServicoNFe.RecepcaoEventoImportacaoAlcZfmNFe:
+                case ServicoNFe.RecepcaoEventoFornecimentoNaoRealizadoNFe:
+                case ServicoNFe.RecepcaoEventoApropriacaoCredPresumidoNFe:
+                case ServicoNFe.RecepcaoEventoPerecimentoTransporteAdquirenteNFe:
+                case ServicoNFe.RecepcaoEventoAceiteDebitoNotaCreditoNFe:
+                case ServicoNFe.RecepcaoEventoImobilizacaoItemNFe:
+                case ServicoNFe.RecepcaoEventoApropriacaoCreditoCombustivelNFe:
+                case ServicoNFe.RecepcaoEventoApropriacaoCreditoBensServicosNFe:
+                case ServicoNFe.RecepcaoEventoManifestacaoTransfCredIBSNFe:
+                case ServicoNFe.RecepcaoEventoManifestacaoTransfCredCBSNFe:
+                case ServicoNFe.RecepcaoEventoManifestacaoFiscoTransfCredIBSNFe:
+                case ServicoNFe.RecepcaoEventoManifestacaoFiscoTransfCredCBSNFe:
+                    return new RecepcaoEvento4SVCAN(url, certificado, cfg.TimeOut);
+
                 case ServicoNFe.RecepcaoEventoConciliacaoFinanceiraNFe:
                 case ServicoNFe.RecepcaoEventoCancConciliacaoFinanceiraNFe:
                     return new RecepcaoEvento4SVCAN(url, certificado, cfg.TimeOut);
