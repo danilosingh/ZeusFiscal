@@ -24,22 +24,24 @@ namespace CTe.Servicos.Eventos
             _nProtEvPrestDes = nProtEvPrestDes;
         }
 
-        public retEventoCTe CancelarDesacordo(ConfiguracaoServico configuracaoServico = null)
+        public retEventoCTe CancelarDesacordo(ConfiguracaoServico configuracaoServico = null, DFe.Classes.Entidades.Estado? orgaoEmissor = null)
         {
+            var configServico = configuracaoServico ?? ConfiguracaoServico.Instancia;
             var eventoCancelaDiscordar = ClassesFactory.CriaEvCancPrestDesacordo(_nProtEvPrestDes);
 
-            EventoEnviado = FactoryEvento.CriaEvento(CTeTipoEvento.CancelamentoPrestacaodoServicoemDesacordo, _sequenciaEvento, _chave, _cnpj, eventoCancelaDiscordar, configuracaoServico);
-            RetornoSefaz = new ServicoController().Executar(CTeTipoEvento.CancelamentoPrestacaodoServicoemDesacordo, _sequenciaEvento, _chave, _cnpj, eventoCancelaDiscordar, configuracaoServico);
+            EventoEnviado = FactoryEvento.CriaEvento(CTeTipoEvento.CancelamentoPrestacaodoServicoemDesacordo, _sequenciaEvento, _chave, _cnpj, eventoCancelaDiscordar, configServico, orgaoEmissor);
+            RetornoSefaz = new ServicoController().Executar(CTeTipoEvento.CancelamentoPrestacaodoServicoemDesacordo, _sequenciaEvento, _chave, _cnpj, eventoCancelaDiscordar, configServico, orgaoEmissor);
 
             return RetornoSefaz;
         }
 
-        public async Task<retEventoCTe> CancelarDesacordoAsync(ConfiguracaoServico configuracaoServico = null)
+        public async Task<retEventoCTe> CancelarDesacordoAsync(ConfiguracaoServico configuracaoServico = null, DFe.Classes.Entidades.Estado? orgaoEmissor = null)
         {
+            var configServico = configuracaoServico ?? ConfiguracaoServico.Instancia;
             var eventoCancelaDiscordar = ClassesFactory.CriaEvCancPrestDesacordo(_nProtEvPrestDes);
 
-            EventoEnviado = FactoryEvento.CriaEvento(CTeTipoEvento.CancelamentoPrestacaodoServicoemDesacordo, _sequenciaEvento, _chave, _cnpj, eventoCancelaDiscordar, configuracaoServico);
-            RetornoSefaz = await new ServicoController().ExecutarAsync(CTeTipoEvento.CancelamentoPrestacaodoServicoemDesacordo, _sequenciaEvento, _chave, _cnpj, eventoCancelaDiscordar, configuracaoServico);
+            EventoEnviado = FactoryEvento.CriaEvento(CTeTipoEvento.CancelamentoPrestacaodoServicoemDesacordo, _sequenciaEvento, _chave, _cnpj, eventoCancelaDiscordar, configServico, orgaoEmissor);
+            RetornoSefaz = await new ServicoController().ExecutarAsync(CTeTipoEvento.CancelamentoPrestacaodoServicoemDesacordo, _sequenciaEvento, _chave, _cnpj, eventoCancelaDiscordar, configServico, orgaoEmissor);
 
             return RetornoSefaz;
         }
